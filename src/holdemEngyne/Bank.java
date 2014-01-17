@@ -4,21 +4,12 @@
  * and open the template in the editor.
  */
 
-package holdem;
-
-import enums.TableType.Type;
+package holdemEngyne;
 
 /**
  *
  * @author andrey
  */
-public class Holdem {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
-    }
+public class Bank {
     
 }
