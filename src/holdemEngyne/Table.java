@@ -24,7 +24,7 @@ public class Table {
      private int distributionCount; //количество раздач
      private final ArrayList<Player> players;
      private Bank bank;
-     Table(Type limit, int maxPlayers, float blinds){
+     public Table(Type limit, int maxPlayers, float blinds){
          this.limit = limit;
          this.maxPlayers = maxPlayers;
          this.blinds = blinds;
@@ -37,7 +37,7 @@ public class Table {
          JSONObject result = new JSONObject();
          result.put("blinds", (blinds / 2) + "/" + blinds);
          result.put("type", limit.toString());
-         result.put("players", players.size());
+         result.put("players", maxPlayers);
          result.put("averageBank", averageBank);
          result.put("flopView", flopView);
          result.put("distributionCount", distributionCount);
