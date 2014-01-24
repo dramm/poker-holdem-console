@@ -19,12 +19,13 @@ public class Receiver extends Thread { //приемник
     private InputStream input = null;
 
     @Override
-    public void run() {
-
+    public void run(){
         try {
             Transmitter transmitter = new Transmitter();
             transmitter.setOutput(clientSocket.getOutputStream());
             transmitter.start();
+            Lobby lobby = new Lobby();
+            lobby.start();
             input = new BufferedInputStream(clientSocket.getInputStream());
             int flag = 1;
             while (flag > 0) {
@@ -32,21 +33,16 @@ public class Receiver extends Thread { //приемник
                 flag = input.read(command, 0, 4);
                 int result = Functions.byteArrayToInt(command);
                 switch (result) {
-                    case 100: {
-                        synchronized (transmitter) {
-                            transmitter.setEventComand(result);
-                            transmitter.wait();
-                        }
+                    case 100: { // передать список столов
+                        lobby.setCommand(result + 1);
+                        System.out.println("request tableList");
                     }
                 }
+                Thread.sleep(10);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void getTablesList() {
-
     }
 
     public void setClientSocket(Socket clientSocket) {
