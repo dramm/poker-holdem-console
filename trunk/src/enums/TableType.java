@@ -11,7 +11,13 @@ package enums;
  * @author andrey
  */
 public class TableType {
-    public enum Type{ LIMIT, NOLIMIT;
+    public enum Type{ LIMIT(0), NOLIMIT(1);
+        private int value;
+
+        private Type(int value) {
+            this.value = value;
+        }
+        
         @Override
         public String toString(){
             switch(this){
@@ -23,6 +29,9 @@ public class TableType {
                 }
             }
             return null;
+        }
+        public int getInt(){
+            return value;
         }
     }
 }

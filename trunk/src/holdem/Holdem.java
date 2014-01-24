@@ -19,16 +19,16 @@ import threads.Receiver;
  * @author andrey
  */
 public class Holdem {
-
-    public static ArrayList<Table> tables = new ArrayList<>();
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args){
         try {
             ServerSocket server = new ServerSocket(7778);
+            System.out.println("Server start");
             Receiver rec = new Receiver();
             rec.setClientSocket(server.accept());
+            System.out.println("Client connected");
             rec.start();
             rec.join();
         } catch (Exception ex) {
