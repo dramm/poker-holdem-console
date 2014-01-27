@@ -31,7 +31,10 @@ public class Lobby extends Thread {
         run = true;
         tables.add(new Table(TableType.Type.LIMIT, 9, 0.5f, 1));
         tables.add(new Table(TableType.Type.NOLIMIT, 9, 0.5f, 2));
-        tables.add(new Table(TableType.Type.NOLIMIT, 6, 1.00f, 3));
+        tables.add(new Table(TableType.Type.NOLIMIT, 5, 1.00f, 3));
+        tables.add(new Table(TableType.Type.NOLIMIT, 5, 1.00f, 4));
+        tables.add(new Table(TableType.Type.NOLIMIT, 4, 1.00f, 5));
+        tables.add(new Table(TableType.Type.NOLIMIT, 4, 1.00f, 6));
     }
     
     
