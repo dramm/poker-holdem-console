@@ -6,7 +6,12 @@
 package holdem;
 
 import holdemEngyne.Table;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,9 +26,10 @@ public class Holdem {
     /**
      * @param args the command line arguments
      */
+    private static ServerSocket server;
     public static void main(String[] args) {
         try {
-            ServerSocket server = new ServerSocket(7778);
+            server = new ServerSocket(7778);
             System.out.println("Server start");
             while (true) {
                 System.out.println("Wait connect client");
@@ -32,6 +38,8 @@ public class Holdem {
                 System.out.println("Client connected");
                 rec.start();
                 rec.join();
+                System.out.println("after join");
+                Thread.sleep(1000);
             }
         } catch (Exception ex) {
             Logger.getLogger(Holdem.class.getName()).log(Level.SEVERE, null, ex);

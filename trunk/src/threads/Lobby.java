@@ -8,6 +8,7 @@ package threads;
 
 import enums.TableType;
 import holdemEngyne.Message;
+import holdemEngyne.Player;
 import holdemEngyne.Table;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -42,22 +43,29 @@ public class Lobby extends Thread {
     public void run() {
         while(run){
             try {
-                Thread.sleep(10);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Lobby.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
     
-    public Message setCommand(int command) throws JSONException{
+    public void setCommand(int command) throws JSONException{
         switch(command){
             case 101:{
                 getTablesList(command);
                 break;
             }
         }
-        
-        return null;
+    }
+    
+    public void SetCommandAndData(int command, JSONObject data){
+        switch(command){
+            case 121:{
+                playerPlant(data);
+                break;
+            }
+        }
     }
 
     private void getTablesList(int command) throws JSONException {
@@ -71,6 +79,32 @@ public class Lobby extends Thread {
         messager.setMessage(result);
         messager.setCommand(command);
         messager.setFlag(run);
+    }
+    
+    private void playerPlant(JSONObject data){
+        try {
+            int userId = data.getInt("userId");
+            double stack = data.getDouble("stack");
+            int tableId = data.getInt("tableId");
+            int plaseId = data.getInt("plaseId");
+            Player p = new Player(userId, stack, plaseId, tableId);
+            //tables.get(tableId).playerPlant(plaseId, p);
+            for (Table table : tables) {
+                if(table.getTableId() == tableId){
+                    table.playerPlant(plaseId, p);
+                }
+            }
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(Lobby.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * @param run the run to set
+     */
+    public void setRun(boolean run) {
+        this.run = run;
     }
     
 }
