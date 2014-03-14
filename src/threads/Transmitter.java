@@ -26,14 +26,14 @@ public class Transmitter extends Thread { //передатчик
             if (Lobby.messager.isFlag()) {
                 int command = Lobby.messager.getCommand();
                 switch (command) {
-                    case 101: {
-                        writeMessage(command);
-                        Lobby.messager.setFlag(false);
-                        break;
-                    }
-                    case 121:{//передаю статус стола
-                        writeMessage(command);
-                        Lobby.messager.setFlag(false);
+                    case 101: 
+                    case 121:
+                    case 131:
+                    case 141:
+                    case 151://starting stage
+                    case 161://preflop
+                    {
+                        writeMessage();
                         break;
                     }
                 }
@@ -58,13 +58,15 @@ public class Transmitter extends Thread { //передатчик
         this.flag = flag;
     }
 
-    private void writeMessage(int command) {
+    private void writeMessage() {
         try {
-            output.write(Functions.intToByteArray(command));
+            output.write(Functions.intToByteArray(Lobby.messager.getCommand()));
             output.write(Functions.intToByteArray(Lobby.messager.getMessage().toString().length()));
             output.write(Xor.encode(Lobby.messager.getMessage().toString().getBytes()));
+            System.out.println("Write message");
             System.out.println(Lobby.messager.getMessage().toString());
             output.flush();
+            Lobby.messager.setFlag(false);
         } catch (IOException ex) {
             Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -34,7 +34,7 @@ public class Message {
         return message;
     }
 
-    public synchronized void setMessage(JSONObject message) {
+    public void setMessage(JSONObject message) {
         this.message = message;
     }
 
@@ -46,11 +46,17 @@ public class Message {
         this.flag = flag;
     }
 
-    public synchronized int getCommand() {
+    public int getCommand() {
         return command;
     }
 
-    public synchronized void setCommand(int command) {
+    public void setCommand(int command) {
+        this.command = command;
+    }
+    
+    public synchronized void set(int command, JSONObject data, boolean flag){
+        this.message = data;
+        this.flag = flag;
         this.command = command;
     }
     

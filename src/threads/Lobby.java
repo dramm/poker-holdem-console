@@ -36,6 +36,9 @@ public class Lobby extends Thread {
         tables.add(new Table(TableType.Type.NOLIMIT, 5, 1.00f, 4));
         tables.add(new Table(TableType.Type.NOLIMIT, 4, 1.00f, 5));
         tables.add(new Table(TableType.Type.NOLIMIT, 4, 1.00f, 6));
+        for (Table table : tables) {
+            table.start();
+        }
     }
     
     
@@ -65,6 +68,15 @@ public class Lobby extends Thread {
                 playerPlant(data);
                 break;
             }
+            case 131:
+            case 141:{
+                playerRemove(data);
+                break;
+            }
+            case 200:{
+                askPlayer(data);
+                break;
+            }
         }
     }
 
@@ -83,6 +95,7 @@ public class Lobby extends Thread {
     
     private void playerPlant(JSONObject data){
         try {
+            System.out.println("playerPlant");
             int userId = data.getInt("userId");
             double stack = data.getDouble("stack");
             int tableId = data.getInt("tableId");
@@ -91,13 +104,43 @@ public class Lobby extends Thread {
             //tables.get(tableId).playerPlant(plaseId, p);
             for (Table table : tables) {
                 if(table.getTableId() == tableId){
-                    table.playerPlant(plaseId, p);
+                    if(!userCheckTable(table, userId)){
+                        System.out.println("Check complite");
+                        table.playerPlant(plaseId, p);
+                    }
                 }
             }
             
         } catch (JSONException ex) {
             Logger.getLogger(Lobby.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void playerRemove(JSONObject data) {
+        try {
+            int tableId = data.getInt("tableId");
+            int userId = data.getInt("userId");
+            for (Table table : tables) {
+                if(table.getTableId() == tableId){
+                    table.removePlayer(userId);
+                }
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(Lobby.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    private boolean userCheckTable(Table table, int userId){
+        ArrayList<Player> players = table.getPlayers();
+        for (Player player : players) {
+            if(player != null){
+                if(player.getPlayerId() == userId){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -106,5 +149,24 @@ public class Lobby extends Thread {
     public void setRun(boolean run) {
         this.run = run;
     }
+
+    private void askPlayer(JSONObject data) {
+        try {
+            System.out.println("askPlayer");
+            int userId = data.getInt("userId");
+            int tableId = data.getInt("tableId");
+            int plaseId = data.getInt("plaseId");
+            for (Table table : tables) {
+                if(table.getTableId() == tableId){
+                    table.askPlayer();
+                }
+            }
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(Lobby.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    
     
 }

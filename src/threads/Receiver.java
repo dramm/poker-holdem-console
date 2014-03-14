@@ -34,8 +34,9 @@ public class Receiver extends Thread { //приемник
                 System.out.println("New iteration");
                 byte[] command = new byte[4];
                 flag = input.read(command, 0, 4);
-                System.out.println("Read command " + flag);
+                
                 int result = Functions.byteArrayToInt(command);
+                System.out.println("Read command " + result);
                 switch (result) {
                     case 100: { // передать список столов
                         lobby.setCommand(result + 1);
@@ -53,6 +54,19 @@ public class Receiver extends Thread { //приемник
                         System.out.println(data.toString());
                         break;
                     }
+                    case 130:
+                    case 140:
+                    case 200:{//{tableId:1,userId:12}
+                        byte[] len = new byte[4];
+                        flag = input.read(len, 0, 4);
+                        byte[] message = new byte[Functions.byteArrayToInt(len)];
+                        flag = input.read(message, 0, Functions.byteArrayToInt(len));
+                        JSONObject data = new JSONObject(new String(Xor.encode(message)));
+                        lobby.SetCommandAndData(result + 1, data);
+                        System.out.println("Remove user");
+                        System.out.println(data.toString());
+                        break;
+                    }
                 }
                 Thread.sleep(200);
             }
@@ -62,6 +76,10 @@ public class Receiver extends Thread { //приемник
             transmitter.setFlag(false);
             lobby.setRun(false);
         }
+    }
+    
+    private void setCommand(){
+        
     }
 
     public void setClientSocket(Socket clientSocket) {
