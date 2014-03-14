@@ -5,6 +5,7 @@
  */
 package holdem;
 
+import holdemEngyne.Card;
 import holdemEngyne.Table;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -45,5 +46,4 @@ public class Holdem {
             Logger.getLogger(Holdem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }
